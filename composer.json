@@ -1,0 +1,16 @@
+{
+    "name": "gabeta/numerotation",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gabeta Soro",
+            "email": "gabeta.soro@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+        	"Gabeta\\Numerotation\\": "src/"
+        }
+    },
+    "require": {}
+}
