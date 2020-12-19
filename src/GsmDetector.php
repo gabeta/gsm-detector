@@ -5,6 +5,7 @@ namespace Gabeta\GsmDetector;
 
 
 use Gabeta\GsmDetector\Exceptions\GsmDetectorException;
+use Gabeta\GsmDetector\Exceptions\InvalidGsmDetectorMethod;
 
 class GsmDetector
 {
@@ -12,8 +13,6 @@ class GsmDetector
      * @var array
      */
     private static $config;
-
-    private $instanceConfig;
 
     private static $fixKeyName = "fix";
 
@@ -28,8 +27,62 @@ class GsmDetector
             }
         } else {
             self::validateConfig($config);
-            $this->instanceConfig = $config;
+            self::$config = $config;
         }
+    }
+
+    public function __call($methodName, $arguments)
+    {
+        $name = lcfirst(substr($methodName, 2, (strlen($methodName) - 2)));
+
+        $name = preg_split('/(?=[A-Z])/', $name);
+
+        $gsmName = strtolower($name[0]);
+
+        if (count($name) === 1 && array_key_exists($gsmName, self::$config)) {
+            return $this->isGsm($gsmName, $arguments[0]);
+        }
+
+        $gsmType = strtolower($name[1]);
+
+        if ($this->gsmHasType($gsmName, $gsmType)) {
+            return $this->isGsmWithType($gsmName, $gsmType, $arguments[0]);
+        }
+
+        throw new InvalidGsmDetectorMethod('Impossible to use '.$name.'() method Add new config value for '.$gsmName);
+    }
+
+    public function isGsm($name, string $value)
+    {
+        $gsmConfig = self::$config[$name];
+
+        $prefix = call_user_func_array('array_merge', $gsmConfig);
+
+        $valuePrefix = substr($value, 0, 2);
+
+        return in_array($valuePrefix, $prefix);
+    }
+
+    public function isGsmWithType($gsm, $type, $value)
+    {
+        $gsmConfig = self::$config[$gsm];
+
+        $typePrefix = $gsmConfig[$type];
+
+        $valuePrefix = substr($value, 0, 2);
+
+        return in_array($valuePrefix, $typePrefix);
+    }
+
+    private function gsmHasType($gsm, $type)
+    {
+        $gsmConfig = self::$config[$gsm];
+
+        if (! array_key_exists($type, $gsmConfig)) {
+            throw new InvalidGsmDetectorMethod('You have not declare '.$type.' value for '.$gsm);
+        }
+
+        return true;
     }
 
     private static function setConfig(array $config)

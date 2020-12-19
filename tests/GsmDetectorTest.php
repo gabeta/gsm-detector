@@ -18,9 +18,17 @@ class GsmDetectorTest extends TestCase
             ],
             'orange' => [
                 'fix' => ['22'],
-                'mobile' => ['09']
+                'mobile' => ['09', '88']
+            ],
+            'togocel' => [
+                'fix' => ['23'],
+                'mobile' => ['04', '05']
             ],
         ]);
+
+        var_dump($gsmDetector->isTogocel('04361076'));
+
+        var_dump($gsmDetector->isTogocelFix('23361076'));
 
         $this->assertTrue(true);
     }
