@@ -4,7 +4,6 @@
 namespace Gabeta\GsmDetector\Test;
 
 
-use Gabeta\GsmDetector\Exceptions\GsmDetectorException;
 use Gabeta\GsmDetector\GsmDetector;
 use PHPUnit\Framework\TestCase;
 

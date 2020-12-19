@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/gabeta/gsm-detector.svg?branch=main)](https://travis-ci.org/gabeta/gsm-detector)
-
 ## A propos
 
 Gsm Detector est un package PHP qui permet de connaitre le nom du reseau GSM 
@@ -13,12 +11,12 @@ Compatible with PHP >= 7.2
 composer require gabeta/gsm-detector
 ```
 
-## How it works
+## Comment ça marche
 
 #### Instanciation
 
-You must initiate the **GsmDetector** class with an array containing the names of
-GSM networks and their different prefixes.
+Vous devez intanciez la classe **GsmDetector** avec un tableau contenant le nom des 
+réseaux GSM et leurs different prefix.
 
 **Code d'exmple:**
 ```php
@@ -37,12 +35,11 @@ $gsmDetector = new GsmDetector([
 
 ```
 
-Here we instantiate our class with the GSM **mtn and orange** networks
-and their different prefixes. Each GSM network defined in our table must have
-the "fix" and / or "mobile" keys to define our various prefixes.
+Ici nous instanciez notre classe avec les réseaux GSM **mtn et orange**
+et leurs différents prefix. Chaque réseau GSM definit dans notre tableau devra avoir
+les clés "fix" et/ou "mobile" pour définir nos différents préfix. 
 
-#### Instantiation
-
+#### Instanciation
 ```php
 use Gabeta\GsmDetector\GsmDetector;
 
@@ -89,16 +86,16 @@ $gsmDetector->isOrange('22000000') // true
 
 ```
 
-For each new name of GSM defines three methods are created:
+Pour chaque nouveau nom de GSM définit trois methodes sont créer:
 
 * is{Gsm}
 * is{Gsm}Fix
 * is{Gsm}Mobile
 
-For moov for example we will therefore have:
+Pour moov par exemple nous aurons donc:
 
 * isMoov
 * isMoovFix
 * isMoovMobile
 
-#### Other use
+#### D'autres usage
