@@ -3,15 +3,22 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
-        operating-system: [ubuntu-latest, windows-latest, macOS-latest]
-        php-versions: ['7.2', '7.3']
-    name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
+        operating-system: ['ubuntu-16.04']
+        php-versions: ['7.3', '7.4']
+        phpunit-versions: ['latest']
+        include:
+          - operating-system: 'ubuntu-latest'
+            php-versions: '7.2'
+            phpunit-versions: '8.5.13'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Install PHP
+
+      - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
-      - name: Check PHP Version
-        run: php -v
+          extensions: mbstring, intl
+          ini-values: post_max_size=256M, max_execution_time=180
+          coverage: xdebug
+          tools: php-cs-fixer, phpunit:${{ matrix.phpunit-versions }}
