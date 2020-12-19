@@ -2,8 +2,8 @@
 
 ## A propos
 
-Gsm Detector est un package PHP qui permet de connaitre le nom du reseau GSM 
-d'un numéro de téléphone donné.
+Gsm Detector is a PHP package which allows to know the name of the GSM network
+of a given phone number.
 
 ## Installation
 
@@ -71,15 +71,15 @@ $gsmDetector->isOrangeFix('35000000') // true
 
 $gsmDetector->isOrangeMobile('35000000') // false
 
-$gsmDetector->isTogocel('04000000') // true
+$gsmDetector->isMtn('04000000') // true
 
-$gsmDetector->isTogocel('24000000') // true
+$gsmDetector->isMtn('24000000') // true
         
-$gsmDetector->isTogocel('35000000') // false
+$gsmDetector->isMtn('35000000') // false
         
-$gsmDetector->isTogocel('08000000') // false
+$gsmDetector->isMtn('08000000') // false
 
-$gsmDetector->isTogocel('23000000') // true
+$gsmDetector->isMtn('23000000') // true
 
 $gsmDetector->isOrange('88000000') // true
 
