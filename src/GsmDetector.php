@@ -85,7 +85,7 @@ class GsmDetector
         return true;
     }
 
-    private static function setConfig(array $config)
+    public static function setConfig(array $config)
     {
         self::validateConfig($config);
 
