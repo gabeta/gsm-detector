@@ -15,8 +15,6 @@ composer require gabeta/gsm-detector
 
 ## How it works
 
-#### Instanciation
-
 You must initiate the **GsmDetector** class with an array containing the names of
 GSM networks and their different prefixes.
 
@@ -40,8 +38,6 @@ $gsmDetector = new GsmDetector([
 Here we instantiate our class with the GSM **mtn and orange** networks
 and their different prefixes. Each GSM network defined in our table must have
 the "fix" and / or "mobile" keys to define our various prefixes.
-
-#### Instantiation
 
 ```php
 use Gabeta\GsmDetector\GsmDetector;
@@ -100,5 +96,3 @@ For moov for example we will therefore have:
 * isMoov
 * isMoovFix
 * isMoovMobile
-
-#### Other use

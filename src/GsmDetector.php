@@ -59,10 +59,12 @@ class GsmDetector
             return $this->isType($arguments[0], self::$fixKeyName);
         }
 
-        $gsmType = strtolower($name[1]);
+        if (count($name) === 2) {
+            $gsmType = strtolower($name[1]);
 
-        if ($this->gsmHasType($gsmName, $gsmType)) {
-            return $this->isGsmWithType($gsmName, $gsmType, $arguments[0]);
+            if ($this->gsmHasType($gsmName, $gsmType)) {
+                return $this->isGsmWithType($gsmName, $gsmType, $arguments[0]);
+            }
         }
 
         throw new InvalidGsmDetectorMethod('Impossible to use '.$methodName.'() method Add new config value for '.$gsmName);
