@@ -9,15 +9,17 @@ use Gabeta\GsmDetector\Exceptions\InvalidGsmDetectorMethod;
 
 class GsmDetector
 {
-    /**
-     * @var array
-     */
     private static $config;
 
     private static $fixKeyName = "fix";
 
     private static $mobileKeyName = "mobile";
 
+    /**
+     * GsmDetector constructor.
+     * @param array|null $config
+     * @throws GsmDetectorException
+     */
     public function __construct(array $config = null)
     {
         if ($config === null) {
@@ -31,16 +33,30 @@ class GsmDetector
         }
     }
 
+    /**
+     * @param $methodName
+     * @param $arguments
+     * @return bool
+     * @throws InvalidGsmDetectorMethod
+     */
     public function __call($methodName, $arguments)
     {
-        $name = lcfirst(substr($methodName, 2, (strlen($methodName) - 2)));
+        $methodName = lcfirst(substr($methodName, 2, (strlen($methodName) - 2)));
 
-        $name = preg_split('/(?=[A-Z])/', $name);
+        $name = preg_split('/(?=[A-Z])/', $methodName);
 
         $gsmName = strtolower($name[0]);
 
         if (count($name) === 1 && array_key_exists($gsmName, self::$config)) {
             return $this->isGsm($gsmName, $arguments[0]);
+        }
+
+        if (count($name) === 1 && ($gsmName === self::$mobileKeyName)) {
+            return $this->isType($arguments[0], self::$mobileKeyName);
+        }
+
+        if (count($name) === 1 && ($gsmName === self::$fixKeyName)) {
+            return $this->isType($arguments[0], self::$fixKeyName);
         }
 
         $gsmType = strtolower($name[1]);
@@ -49,31 +65,48 @@ class GsmDetector
             return $this->isGsmWithType($gsmName, $gsmType, $arguments[0]);
         }
 
-        throw new InvalidGsmDetectorMethod('Impossible to use '.$name.'() method Add new config value for '.$gsmName);
+        throw new InvalidGsmDetectorMethod('Impossible to use '.$methodName.'() method Add new config value for '.$gsmName);
     }
 
+    /**
+     * @param $name
+     * @param string $value
+     * @return bool
+     */
     public function isGsm($name, string $value)
     {
         $gsmConfig = self::$config[$name];
 
         $prefix = call_user_func_array('array_merge', $gsmConfig);
 
-        $valuePrefix = substr($value, 0, 2);
+        $numberPrefix = $this->getNumberPrefix($value);
 
-        return in_array($valuePrefix, $prefix);
+        return in_array($numberPrefix, $prefix);
     }
 
+    /**
+     * @param $gsm
+     * @param $type
+     * @param $value
+     * @return bool
+     */
     public function isGsmWithType($gsm, $type, $value)
     {
         $gsmConfig = self::$config[$gsm];
 
         $typePrefix = $gsmConfig[$type];
 
-        $valuePrefix = substr($value, 0, 2);
+        $numberPrefix = $this->getNumberPrefix($value);
 
-        return in_array($valuePrefix, $typePrefix);
+        return in_array($numberPrefix, $typePrefix);
     }
 
+    /**
+     * @param $gsm
+     * @param $type
+     * @return bool
+     * @throws InvalidGsmDetectorMethod
+     */
     private function gsmHasType($gsm, $type)
     {
         $gsmConfig = self::$config[$gsm];
@@ -85,6 +118,41 @@ class GsmDetector
         return true;
     }
 
+    public function isType($value, $type)
+    {
+        $typeArray = [];
+
+        $numberPrefix = $this->getNumberPrefix($value);
+
+        foreach (self::$config as $config) {
+            $typeArray = array_merge($typeArray, $config[$type]);
+        }
+
+        return in_array($numberPrefix, $typeArray);
+    }
+
+    /**
+     * @param $value
+     * @return int|string|null
+     */
+    public function getGsmName($value)
+    {
+        $numberPrefix = $this->getNumberPrefix($value);
+
+        foreach (self::$config as $key => $config) {
+            $prefix = call_user_func_array('array_merge', $config);
+
+            if (in_array($numberPrefix, $prefix)) {
+                return $key;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param array $config
+     */
     public static function setConfig(array $config)
     {
         self::validateConfig($config);
@@ -92,6 +160,10 @@ class GsmDetector
         self::$config = $config;
     }
 
+    /**
+     * @param array $config
+     * @return bool
+     */
     private static function validateConfig(array $config)
     {
         if (!count($config)) {
@@ -103,6 +175,9 @@ class GsmDetector
         return true;
     }
 
+    /**
+     * @param $config
+     */
     private static function validateConfigFormat($config)
     {
         foreach ($config as $key => $conf) {
@@ -118,5 +193,10 @@ class GsmDetector
                 throw new \InvalidArgumentException($key.' '.self::$mobileKeyName.' values must be array.');
             }
         }
+    }
+
+    private function getNumberPrefix($value)
+    {
+        return substr($value, 0, 2);
     }
 }

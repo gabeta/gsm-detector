@@ -95,4 +95,41 @@ class GsmDetectorTest extends TestCase
         $this->assertTrue($gsmDetector->isOrangeFix('35000000'));
         $this->assertFalse($gsmDetector->isOrangeMobile('35000000'));
     }
+
+    public function test_get_gsm_name()
+    {
+        $gsmDetector = new GsmDetector([
+            'orange' => [
+                'fix' => ['22', '35'],
+                'mobile' => ['09', '88']
+            ],
+            'togocel' => [
+                'fix' => ['23', '24'],
+                'mobile' => ['04', '05']
+            ],
+        ]);
+
+        $this->assertEquals($gsmDetector->getGsmName('22000000'), 'orange');
+        $this->assertNull($gsmDetector->getGsmName('20000000'));
+        $this->assertEquals($gsmDetector->getGsmName('05000000'), 'togocel');
+    }
+
+    public function test_is_type()
+    {
+        $gsmDetector = new GsmDetector([
+            'orange' => [
+                'fix' => ['22', '35'],
+                'mobile' => ['09', '88']
+            ],
+            'togocel' => [
+                'fix' => ['23', '24'],
+                'mobile' => ['04', '05']
+            ],
+        ]);
+
+        $this->assertTrue($gsmDetector->isMobile('04000000'));
+        $this->assertFalse($gsmDetector->isMobile('23000000'));
+        $this->assertTrue($gsmDetector->isFix('23000000'));
+        $this->assertFalse($gsmDetector->isFix('8800000'));
+    }
 }
