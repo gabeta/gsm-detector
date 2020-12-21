@@ -89,7 +89,9 @@ $gsmDetector->isOrangeMobile('35000000') // false
 
 $gsmDetector->getGsmName('04000000'); // mtn
 
-$gsmDetector->isMobile('04000000'); // True
+$gsmDetector->isMobile('04000000'); // true
+
+$gsmDetector->isFix('04000000'); // false
 
 ```
 
