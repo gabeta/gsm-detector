@@ -53,20 +53,6 @@ $gsmDetector = new GsmDetector([
     ],
 ]);
 
-$gsmDetector->isMtnFix('23000000') // true
-
-$gsmDetector->isMtnFix('24000000') // true
-
-$gsmDetector->isMtnFix('04000000') // false
-
-$gsmDetector->isMtnMobile('04000000') // true
-
-$gsmDetector->isOrangeFix('22000000') // true
-
-$gsmDetector->isOrangeFix('35000000') // true
-
-$gsmDetector->isOrangeMobile('35000000') // false
-
 $gsmDetector->isMtn('04000000') // true
 
 $gsmDetector->isMtn('24000000') // true
@@ -82,6 +68,28 @@ $gsmDetector->isOrange('88000000') // true
 $gsmDetector->isOrange('09000000') // true
 
 $gsmDetector->isOrange('22000000') // true
+
+$gsmDetector->isMtnFix('23000000') // true
+
+$gsmDetector->isMtnFix('24000000') // true
+
+$gsmDetector->isMtnFix('04000000') // false
+
+$gsmDetector->isMtnMobile('04000000') // true
+
+$gsmDetector->isOrangeFix('22000000') // true
+
+$gsmDetector->isOrangeFix('35000000') // true
+
+$gsmDetector->isOrangeMobile('35000000') // false
+
+/**
+* OTHERS METHODS
+**/
+
+$gsmDetector->getGsmName('04000000'); // mtn
+
+$gsmDetector->isMobile('04000000'); // True
 
 ```
 

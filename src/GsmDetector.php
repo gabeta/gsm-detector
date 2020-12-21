@@ -120,6 +120,11 @@ class GsmDetector
         return true;
     }
 
+    /**
+     * @param $value
+     * @param $type
+     * @return bool
+     */
     public function isType($value, $type)
     {
         $typeArray = [];
@@ -197,6 +202,10 @@ class GsmDetector
         }
     }
 
+    /**
+     * @param $value
+     * @return false|string
+     */
     private function getNumberPrefix($value)
     {
         return substr($value, 0, 2);
