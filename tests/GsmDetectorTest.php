@@ -29,7 +29,7 @@ class GsmDetectorTest extends TestCase
         $this->assertFalse($gsmDetector->isGsm('togocel', '26000000'));
         $this->assertFalse($gsmDetector->isGsm('orange', '29000000'));
 
-        GsmDetector::setFixPrefixLength(3);
+        GsmDetector::setFixPrefixDigits(3);
 
         $this->assertFalse($gsmDetector->isGsm('orange', '215000000'));
     }
@@ -54,7 +54,7 @@ class GsmDetectorTest extends TestCase
         $this->assertFalse($gsmDetector->isGsmWithType('togocel', 'fix', '01000000'));
         $this->assertTrue($gsmDetector->isGsmWithType('orange','fix', '35000000'));
 
-        GsmDetector::setFixPrefixLength(3);
+        GsmDetector::setFixPrefixDigits(3);
 
         $this->assertTrue($gsmDetector->isGsmWithType('orange','fix', '21500000'));
     }
@@ -81,7 +81,7 @@ class GsmDetectorTest extends TestCase
         $this->assertTrue($gsmDetector->isOrange('09000000'));
         $this->assertTrue($gsmDetector->isOrange('22000000'));
 
-        GsmDetector::setFixPrefixLength(3);
+        GsmDetector::setFixPrefixDigits(3);
 
         $this->assertTrue($gsmDetector->isOrange('21500000'));
     }

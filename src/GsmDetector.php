@@ -15,9 +15,9 @@ class GsmDetector
 
     private static $mobileKeyName = "mobile";
 
-    private static $mobilePrefixLength = 2;
+    private static $mobilePrefixDigits = 2;
 
-    private static $fixPrefixLength = 3;
+    private static $fixPrefixDigits = 3;
 
     /**
      * GsmDetector constructor.
@@ -164,14 +164,14 @@ class GsmDetector
         self::$config = $config;
     }
 
-    public static function setMobilePrefixLength(int $length)
+    public static function setMobilePrefixDigits(int $length)
     {
-        self::$mobilePrefixLength = $length;
+        self::$mobilePrefixDigits = $length;
     }
 
-    public static function setFixPrefixLength(int $length)
+    public static function setFixPrefixDigits(int $length)
     {
-        self::$fixPrefixLength = $length;
+        self::$fixPrefixDigits = $length;
     }
 
     /**
@@ -220,7 +220,7 @@ class GsmDetector
 
     private function hasValue($prefix, $value)
     {
-        return in_array($this->getNumberPrefix($value, self::$mobilePrefixLength), $prefix) ||
-            in_array($this->getNumberPrefix($value, self::$fixPrefixLength), $prefix);
+        return in_array($this->getNumberPrefix($value, self::$mobilePrefixDigits), $prefix) ||
+            in_array($this->getNumberPrefix($value, self::$fixPrefixDigits), $prefix);
     }
 }
