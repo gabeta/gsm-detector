@@ -15,6 +15,8 @@ class GsmDetector
 
     private static $mobileKeyName = "mobile";
 
+    private static $telPrefixLength = 2;
+
     /**
      * GsmDetector constructor.
      * @param array|null $config
@@ -167,6 +169,11 @@ class GsmDetector
         self::$config = $config;
     }
 
+    public static function setTelPrefixLength(int $length)
+    {
+        self::$telPrefixLength = $length;
+    }
+
     /**
      * @param array $config
      * @return bool
@@ -208,6 +215,6 @@ class GsmDetector
      */
     private function getNumberPrefix($value)
     {
-        return substr($value, 0, 2);
+        return substr($value, 0, self::$telPrefixLength);
     }
 }
