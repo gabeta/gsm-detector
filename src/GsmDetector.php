@@ -15,7 +15,9 @@ class GsmDetector
 
     private static $mobileKeyName = "mobile";
 
-    private static $telPrefixLength = 2;
+    private static $mobilePrefixLength = 2;
+
+    private static $fixPrefixLength = 3;
 
     /**
      * GsmDetector constructor.
@@ -83,9 +85,7 @@ class GsmDetector
 
         $prefix = call_user_func_array('array_merge', $gsmConfig);
 
-        $numberPrefix = $this->getNumberPrefix($value);
-
-        return in_array($numberPrefix, $prefix);
+        return $this->hasValue($prefix, $value);
     }
 
     /**
@@ -98,11 +98,9 @@ class GsmDetector
     {
         $gsmConfig = self::$config[$gsm];
 
-        $typePrefix = $gsmConfig[$type];
+        $prefix = $gsmConfig[$type];
 
-        $numberPrefix = $this->getNumberPrefix($value);
-
-        return in_array($numberPrefix, $typePrefix);
+        return $this->hasValue($prefix, $value);
     }
 
     /**
@@ -129,15 +127,14 @@ class GsmDetector
      */
     public function isType($value, $type)
     {
-        $typeArray = [];
+        $prefix = [];
 
-        $numberPrefix = $this->getNumberPrefix($value);
 
         foreach (self::$config as $config) {
-            $typeArray = array_merge($typeArray, $config[$type]);
+            $prefix = array_merge($prefix, $config[$type]);
         }
 
-        return in_array($numberPrefix, $typeArray);
+        return $this->hasValue($prefix, $value);
     }
 
     /**
@@ -146,12 +143,10 @@ class GsmDetector
      */
     public function getGsmName($value)
     {
-        $numberPrefix = $this->getNumberPrefix($value);
-
         foreach (self::$config as $key => $config) {
             $prefix = call_user_func_array('array_merge', $config);
 
-            if (in_array($numberPrefix, $prefix)) {
+            if ($this->hasValue($prefix, $value)) {
                 return $key;
             }
         }
@@ -169,9 +164,14 @@ class GsmDetector
         self::$config = $config;
     }
 
-    public static function setTelPrefixLength(int $length)
+    public static function setMobilePrefixLength(int $length)
     {
-        self::$telPrefixLength = $length;
+        self::$mobilePrefixLength = $length;
+    }
+
+    public static function setFixPrefixLength(int $length)
+    {
+        self::$fixPrefixLength = $length;
     }
 
     /**
@@ -213,8 +213,14 @@ class GsmDetector
      * @param $value
      * @return false|string
      */
-    private function getNumberPrefix($value)
+    private function getNumberPrefix($value, $prefixLength)
     {
-        return substr($value, 0, self::$telPrefixLength);
+        return substr($value, 0, $prefixLength);
+    }
+
+    private function hasValue($prefix, $value)
+    {
+        return in_array($this->getNumberPrefix($value, self::$mobilePrefixLength), $prefix) ||
+            in_array($this->getNumberPrefix($value, self::$fixPrefixLength), $prefix);
     }
 }

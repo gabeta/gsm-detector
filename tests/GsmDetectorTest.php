@@ -28,13 +28,17 @@ class GsmDetectorTest extends TestCase
         $this->assertTrue($gsmDetector->isGsm('orange', '35000000'));
         $this->assertFalse($gsmDetector->isGsm('togocel', '26000000'));
         $this->assertFalse($gsmDetector->isGsm('orange', '29000000'));
+
+        GsmDetector::setFixPrefixLength(3);
+
+        $this->assertFalse($gsmDetector->isGsm('orange', '215000000'));
     }
 
     public function test_is_gsm_with_type()
     {
         $gsmDetector = new GsmDetector([
             'orange' => [
-                'fix' => ['22', '35'],
+                'fix' => ['22', '35', '215'],
                 'mobile' => ['88', '87']
             ],
             'togocel' => [
@@ -49,13 +53,17 @@ class GsmDetectorTest extends TestCase
         $this->assertFalse($gsmDetector->isGsmWithType('orange', 'mobile', '35000000'));
         $this->assertFalse($gsmDetector->isGsmWithType('togocel', 'fix', '01000000'));
         $this->assertTrue($gsmDetector->isGsmWithType('orange','fix', '35000000'));
+
+        GsmDetector::setFixPrefixLength(3);
+
+        $this->assertTrue($gsmDetector->isGsmWithType('orange','fix', '21500000'));
     }
 
     public function test_is_gsm_name()
     {
         $gsmDetector = new GsmDetector([
             'orange' => [
-                'fix' => ['22', '35'],
+                'fix' => ['22', '35', '215'],
                 'mobile' => ['09', '88']
             ],
             'togocel' => [
@@ -72,6 +80,10 @@ class GsmDetectorTest extends TestCase
         $this->assertTrue($gsmDetector->isOrange('88000000'));
         $this->assertTrue($gsmDetector->isOrange('09000000'));
         $this->assertTrue($gsmDetector->isOrange('22000000'));
+
+        GsmDetector::setFixPrefixLength(3);
+
+        $this->assertTrue($gsmDetector->isOrange('21500000'));
     }
 
     public function test_is_gsm_name_with_type()
