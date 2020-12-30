@@ -7,7 +7,7 @@ of a given phone number.
 
 ## Installation
 
-Compatible with PHP >= 5.3 
+Compatible with PHP >= 5.4 
 
 ```bash
 composer require gabeta/gsm-detector
