@@ -129,7 +129,6 @@ class GsmDetector
     {
         $prefix = [];
 
-
         foreach (self::$config as $config) {
             $prefix = array_merge($prefix, $config[$type]);
         }
