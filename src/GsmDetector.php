@@ -79,7 +79,7 @@ class GsmDetector
      * @param string $value
      * @return bool
      */
-    public function isGsm($name, string $value)
+    public function isGsm($name, $value)
     {
         $gsmConfig = self::$config[$name];
 
@@ -164,12 +164,12 @@ class GsmDetector
         self::$config = $config;
     }
 
-    public static function setMobilePrefixDigits(int $length)
+    public static function setMobilePrefixDigits($length)
     {
         self::$mobilePrefixDigits = $length;
     }
 
-    public static function setFixPrefixDigits(int $length)
+    public static function setFixPrefixDigits($length)
     {
         self::$fixPrefixDigits = $length;
     }
