@@ -83,7 +83,7 @@ class GsmDetector
     {
         $gsmConfig = self::$config[$name];
 
-        $prefix = call_user_func_array('array_merge', $gsmConfig);
+        $prefix = call_user_func_array('array_merge', array_values($gsmConfig));
 
         return $this->hasValue($prefix, $value);
     }
@@ -143,7 +143,7 @@ class GsmDetector
     public function getGsmName($value)
     {
         foreach (self::$config as $key => $config) {
-            $prefix = call_user_func_array('array_merge', $config);
+            $prefix = call_user_func_array('array_merge', array_values($config));
 
             if ($this->hasValue($prefix, $value)) {
                 return $key;
